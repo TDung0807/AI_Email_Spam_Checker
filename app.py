@@ -87,3 +87,17 @@ for epoch in range(epochs):
         if (epoch + 1) % 100 == 0:
             print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
         break
+
+with torch.no_grad():
+    model.eval() 
+    correct = 0
+    flag = False
+    total = 0
+    for batch_idx, (inputs, labels) in enumerate(test_loader):
+        for i in range(len(inputs)):      
+            outputs = model(inputs[i]).squeeze()
+            predicted = (outputs > 0.5).float()  
+            if(torch.eq(predicted, labels[i])):
+                correct = correct+1
+            total = total +1
+    print(f'Accuracy: {correct / total * 100:.2f}%')
